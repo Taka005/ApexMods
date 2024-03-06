@@ -645,19 +645,18 @@ echo.                                                                           
 copy mapspawn_and_dev_menu.txt
 cls
 
-echo The Commands For Map Spawn Are	PrecacheWeapon( $"mp_weapon_%Name%" ) >> mapspawn_and_dev_menu.txt
-echo The Commands For Dev Menu Are 	SetupDevCommand( "%PrintName%", "give mp_weapon_%Name%" )>> mapspawn_and_dev_menu.txt
+echo マップスポーンのコード:	PrecacheWeapon( $"mp_weapon_%Name%" ) >> mapspawn_and_dev_menu.txt
+echo 開発メニューのコード SetupDevCommand( "%PrintName%", "give mp_weapon_%Name%" )>> mapspawn_and_dev_menu.txt
 echo .>> mapspawn_and_dev_menu.txt
-echo The Command For The JANU's Framework is  mp_weapon_%Name% >> mapspawn_and_dev_menu.txt
-echo If you use JANU's Framework 2.0 you do not need to map spawn or use the dev menu! >> mapspawn_and_dev_menu.txt
-echo. Please wait 10 seconds before proceeding!
+echo Januのフレームワークのコマンド:  mp_weapon_%Name% >> mapspawn_and_dev_menu.txt
+echo Januのフレームワーク2.0を使用する場合は、スポーンをマップしたり、開発メニューを使用したりする必要はありません >> mapspawn_and_dev_menu.txt
+echo. 続行するには10秒間待ってください
 PING localhost -n 10 >NUL
 move mapspawn_and_dev_menu.txt, mp_weapon_%Name%.txt*.* \Weapons-DevMenu
 cls
 echo.
 echo.
-echo Files Created On Your Computer!
-echo Please Enjoy Your Scripts!
+echo ファイルを正常に作成しました
 echo.
 echo.
 pause
