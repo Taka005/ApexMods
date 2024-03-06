@@ -1,6 +1,6 @@
 @echo off
 
-Echo 詳細設定を有効にしますか？
+Echo 詳細設定を有効にしますか？(Yes/No)
 echo.
 set /p Advanced=Yes/No:
 cls
@@ -36,8 +36,7 @@ if "%Advanced%"=="No" (goto No5)
 if "%Advanced%"=="yes" (goto Yes5)
 if "%Advanced%"=="no" (goto No5)
 :Yes5
-Echo Please Say Yes Or No For Custom Sounds For Your Gun!
-echo YOU NEED SOUNDS FOR THIS!
+Echo 武器のカスタムサウンドを有効にしますか？(Yes/No)
 echo.
 set /p SoundYesOrNo=Enter Yes/No:
 cls
@@ -48,10 +47,8 @@ if "%SoundYesOrNo%"=="No" (goto Nope1)
 if "%SoundYesOrNo%"=="yes" (goto Yep1)
 if "%SoundYesOrNo%"=="no" (goto Nope1)
 :Yep1
-Echo Please Enter The 1P Fire Sound Or Say Skip.
-echo Example: "Weapon_Wingman_Fire_1P" ONlY USE 1P FOR THIS ONE!
-echo Remember that every Fire_1P has a second version
-echo such as Fire_3P Means Third Person, while Fire_1P means First Person!
+Echo 1Pの発射音を入力するかSkipを入力してください
+echo 例: "Weapon_Wingman_Fire_1P"
 echo.
 set /p FireSound1P=Enter 1P Fire Sound :
 cls
@@ -63,10 +60,8 @@ if "%SoundYesOrNo%"=="No" (goto Nope10)
 if "%SoundYesOrNo%"=="yes" (goto Yep10)
 if "%SoundYesOrNo%"=="no" (goto Nope10)
 :Yep10
-Echo Please Enter The 3P Fire Sound Or Say Skip.
-echo Example: "Weapon_Wingman_Fire_3P" ONlY USE 3P FOR THIS ONE!
-echo Remember that every Fire_3P has a second version
-echo such as Fire_3P Means Third Person, while Fire_1P means First Person!
+Echo 3Pの発射音を入力するかSkipを入力してください
+echo 例: "Weapon_Wingman_Fire_3P"
 echo.
 set /p FireSound3P=Enter 3P Fire Sound :
 cls
@@ -78,8 +73,8 @@ if "%SoundYesOrNo%"=="No" (goto Nope2)
 if "%SoundYesOrNo%"=="yes" (goto Yep2)
 if "%SoundYesOrNo%"=="no" (goto Nope2)
 :Yep2
-Echo Please Enter The Dry Fire Sound Or Say Skip.
-echo Example: "assault_rifle_dryfire"!
+Echo 発射音を入力するかSkipを入力してください
+echo 例: "assault_rifle_dryfire"!
 echo.
 set /p DryFireSound=Enter Dry Fire Sound :
 cls
@@ -93,8 +88,8 @@ if "%Advanced%"=="No" (goto No2)
 if "%Advanced%"=="yes" (goto Yes2)
 if "%Advanced%"=="no" (goto No2
 :Yes2
-Echo Please Enter The Player Model.
-echo Example:  "mdl/weapons/mastiff_stgn/w_mastiff.rmdl"
+Echo 武器のモデルを入力してください
+echo 例:  "mdl/weapons/mastiff_stgn/w_mastiff.rmdl"
 set /p PlayerModel=Enter PlayerModel:
 cls
 
