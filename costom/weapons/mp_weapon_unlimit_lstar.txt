@@ -1,22 +1,22 @@
 #base "_base_lmg.txt"
 #base "_base_barrels_large.txt"
 
-                   
+
 #base "_base_mags_energy.txt"
-      
+
 
 #base "_base_stocks_tactical.txt"
 WeaponData
 {
 	// General
 	"tier"    "1"
-"attachments"   "barrel mag sight grip hopup"         
+"attachments"   "barrel mag sight grip hopup"
 "low_chance"            "10.0"
 "med_chance"           "25.0"
 "high_chance"          "5.0"
 "class"                  "lmg"
-	"printname"   									"#WPN_LSTAR"
-	"shortprintname"								"#WPN_LSTAR_SHORT"
+	"printname"   									"無限スター"
+	"shortprintname"								"無限スター"
 	"description" 									"#WPN_LSTAR_DESC"
 	"longdesc"										"#WPN_LSTAR_LONGDESC"
 
@@ -491,13 +491,13 @@ WeaponData
     //"clip_bodygroup_show_for_milestone_2"	"0"
     //"clip_bodygroup_show_for_milestone_3"	"0"
 
-               
-         
-  
-                                       
-                                       
-  
-      
+
+
+
+
+
+
+
 
 	Mods
 	{
@@ -565,9 +565,9 @@ WeaponData
             "viewmodel_offset_zoom_frac_start"      "0.1"
             "viewmodel_offset_zoom_frac_end"        "0.8"
         }
-		
 
-                   
+
+
         energy_mag_l1
 		{
 			"ammo_clip_size"   					"80"
@@ -588,20 +588,20 @@ WeaponData
 			"charge_time"                                   "2.5"  // while holding trigger, time until weapon overheats
 			"charge_cooldown_time"                          "*0.9"  // controls length of overheat anim (along with delay)
 		}
-      
+
 
 		"barrel_stabilizer_l4_flash_hider"
 		{
 			"fx_muzzle_flash_view"				"P_mflash_pulse_LMG_sup_FP"
 			"fx_muzzle_flash_world"				"P_mflash_pulse_LMG_sup"
 		}
-               
-                                                                                                           
-                    
-         
-                                                                                          
-         
-      
+
+
+
+
+
+
+
 	}
 
 	"ui1_enable"		"1"
