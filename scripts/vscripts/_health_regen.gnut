@@ -1,0 +1,206 @@
+
+global function HealthRegen_Init
+
+//global function PilotHealthRegenThinkSP
+global function PilotShieldHealthUpdate
+global function PilotShieldModifyDamage
+
+global bool isPermanentDmg = false
+global float sPermanentDmg = 0.0
+struct
+{
+	float healthRegenRate
+	float healthRegenStartDelay
+	float healthRegenTickTime
+} file
+
+void function HealthRegen_Init()
+{
+		file.healthRegenRate = 1.85 //values that seems to fit with retail
+		file.healthRegenTickTime = 0.60 //values that seems to fit with retail
+		file.healthRegenStartDelay = 5.0
+		AddCallback_OnPassiveChanged( ePassives.PAS_OCTANE, HealthRegen_OnPassiveChanged )
+		RegisterSignal( "PilotHealthRegenThink" )
+}
+
+bool function IsHealActive( entity player )
+{
+	return StatusEffect_GetSeverity( player, eStatusEffect.stim_visual_effect ) > 0.0
+}
+
+void function PilotHealthRegenThinkMP( entity player )
+{
+	player.EndSignal( "OnDestroy" )
+	player.Signal( "PilotHealthRegenThink" )
+	player.EndSignal( "PilotHealthRegenThink" )
+	
+	// There's a delay when you change legends, have to compensate
+	wait 1
+	
+	if(!HealthRegen_IsPlayerAllowed(player))
+		return
+
+	int tick
+	
+	while ( IsValid( player ) )
+	{
+		wait( file.healthRegenTickTime )
+
+		if ( !IsAlive( player ) )
+			continue
+
+		if ( !IsPilot( player ) )
+			continue
+
+		if ( player.GetHealth() == player.GetMaxHealth() )
+			continue
+
+		if ( player.IsPhaseShifted() )
+		{
+			StatusEffect_StopAllOfType( player, eStatusEffect.target_health )
+			tick = 0
+			continue
+		}
+
+		if ( IsHealActive( player ) )
+		{
+			StatusEffect_StopAllOfType( player, eStatusEffect.target_health )
+			tick = 0
+			continue
+		}
+		else if ( Time() - player.p.lastDamageTime < file.healthRegenStartDelay )
+		{
+			StatusEffect_StopAllOfType( player, eStatusEffect.target_health )
+			tick = 0
+			continue
+		}
+		
+		if( tick == 0 )
+		{
+			//printt( floor( player.GetHealth() + int(file.healthRegenRate*1.5)) / 100 ) 
+			// Green regen HUD bar
+			float value = float( player.GetHealth() + int(file.healthRegenRate*2) )
+			StatusEffect_AddTimed
+			(
+				player, 
+				eStatusEffect.target_health,
+				value / 100,
+				file.healthRegenTickTime*3,
+				0
+			)
+			tick++
+			continue
+		} else if( tick == 2 )
+		{
+			tick = 0
+			player.SetHealth( minint( player.GetMaxHealth(),  player.GetHealth() + int( file.healthRegenRate ) ) )
+		} else
+		{
+			player.SetHealth( minint( player.GetMaxHealth(), player.GetHealth() + int( file.healthRegenRate ) ) )
+			tick++
+		}
+		
+		if ( player.GetHealth() == player.GetMaxHealth() )
+		{
+			ClearRecentDamageHistory( player )
+			ClearLastAttacker( player )
+		}
+	}
+}
+
+bool function HealthRegen_IsPlayerAllowed( entity player )
+{
+	if(PlayerHasPassive( player, ePassives.PAS_OCTANE ))
+		return true
+		
+	return false
+}
+
+void function HealthRegen_OnPassiveChanged(entity player, int passive, bool didHave, bool nowHas )
+{
+	thread PilotHealthRegenThinkMP( player )
+}
+void function HealthRegen_OnPlayerClassChangedMP( entity player )
+{	
+	thread PilotHealthRegenThinkMP( player )
+}
+
+float function PilotShieldHealthUpdate( entity player, var damageInfo )
+{
+	int shieldHealth = 0
+	if(IsValid(player))
+		shieldHealth = player.GetShieldHealth()
+
+	float maxHealth = 0.0
+	
+	if(IsValid(player))
+		maxHealth = float(player.GetHealth()) + float(shieldHealth)
+
+	entity attacker = DamageInfo_GetAttacker(damageInfo)
+	if(!attacker.IsPlayer()) return 0
+	
+	float shieldDamage = 0
+	
+	if ( shieldHealth )
+	{
+		DamageInfo_AddCustomDamageType( damageInfo, DF_SHIELD_DAMAGE )
+		shieldDamage = PilotShieldModifyDamage( player, damageInfo )
+	}	
+
+	return shieldDamage
+}
+
+float function PilotShieldModifyDamage( entity player, var damageInfo)
+{
+    entity attacker = DamageInfo_GetAttacker(damageInfo)
+
+    float shieldHealth = 0.0
+	
+	if(IsValid(player))
+		shieldHealth = float( player.GetShieldHealth() )
+	
+    float damage = DamageInfo_GetDamage( damageInfo )
+    float newShieldHealth = shieldHealth - damage
+    float permanentDamage = 0.0
+	
+    if ( newShieldHealth < 0 )
+        permanentDamage = fabs( newShieldHealth )
+	
+	if(IsValid(player))
+		player.SetShieldHealth( maxint( 0, int( newShieldHealth ) ) )
+
+    if ( shieldHealth && newShieldHealth <= 0 )
+    {
+		DamageInfo_AddCustomDamageType( damageInfo, DF_SHIELD_BREAK )
+
+		if( IsValid( attacker ) && IsValid( player ) )
+		{
+			if( attacker != player && attacker.IsPlayer() )
+				EmitSoundOnEntityOnlyToPlayer( attacker, attacker, "humanshield_break_1p_vs_3p" )
+
+			if( player.IsPlayer() )
+				EmitSoundOnEntityOnlyToPlayer( player, player, "humanshield_break_3p_vs_1p" )
+		}
+    }
+
+	if(permanentDamage > 0)
+    {
+		float damagefull = damage + shieldHealth
+		float maxHealth = 0.0
+		
+		if(IsValid(player))
+			maxHealth = float(player.GetHealth())
+		
+		isPermanentDmg = true
+        sPermanentDmg = damage
+		DamageInfo_SetDamage( damageInfo, permanentDamage )	
+		
+		if(IsValid(attacker))
+		{
+			attacker.p.playerDamageDealt += shieldHealth
+			attacker.SetPlayerNetInt( "damage", attacker.GetPlayerNetInt( "damage" ) + shieldHealth )
+		}
+	}
+	
+    return min( shieldHealth, damage )
+} 
