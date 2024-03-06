@@ -1,29 +1,21 @@
 @echo off
-echo Tool Made By Average User.#5826
-echo No One Else Made This Tool!
-pause
-cls
 
-
-Echo Do You Want To Enable Advanced Settings?
-echo ENABLE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING!
-echo YOU MUST KNOW CUSTOM SOUNDS AND MODELS!
+Echo 詳細設定を有効にしますか？
 echo.
 set /p Advanced=Yes/No:
 cls
 
-Echo Please Enter The Name USE _ FOR SPACES ALL LOWERCASE LETTERS TOO
-echo Example, large_machine_gun or ice_fire_gun
+Echo 名前を入力してください。スペースは_ですべて小文字で入力してください
 echo.
 set /p Name=Enter Name:
 cls
 
-Echo Please Enter The  Weapon Print Name
+Echo 武器の表示名を入力してください
 echo.
 set /p PrintName=Enter Print Name:
 cls
 
-Echo Please Enter The Weapon Description.
+Echo 武器の説明を入力してください
 echo.
 set /p Desc=Enter Description:
 cls
@@ -33,8 +25,8 @@ if "%Advanced%"=="No" (goto No)
 if "%Advanced%"=="yes" (goto Yes)
 if "%Advanced%"=="no" (goto No)
 :Yes
-Echo Please Enter The Weapon View Model.
-echo Example:  "mdl/weapons/mastiff_stgn/ptpov_mastiff.rmdl"
+Echo 武器のモデルを入力してください
+echo 例:  "mdl/weapons/mastiff_stgn/ptpov_mastiff.rmdl"
 set /p ViewModel=Enter ViewModel:
 cls
 :No
