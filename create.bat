@@ -5,7 +5,7 @@ echo.
 set /p Advanced=Yes/No:
 cls
 
-Echo 名前を入力してください。スペースは_ですべて小文字で入力してください
+Echo 名前を入力してください。スペースは_で、すべて小文字で入力してください
 echo.
 set /p Name=Enter Name:
 cls
@@ -97,40 +97,40 @@ cls
 :No2
 
 :No5
-Echo Please Enter Total Size
+Echo 武器の弾薬数を入力してください
 echo.
 set /p AmmoTotal=Enter Total Ammo:
 cls
 
-Echo Please Enter Stockpile Size
+Echo 武器のマガジン内弾数を入力してください
 echo.
 set /p AmmoStockPile=Enter Stockpile Size:
 cls
 
-Echo Please Enter Minimum To Fire Amount.
+Echo 武器の最小発射間隔を入力してください
 echo.
 set /p MinFire=Enter Mininum To Fire Amount:
 cls
 
 
-Echo Please Enter A Number You Want Damage Near To Be.
+Echo 近距離の武器のダメージを入力してください
 echo.
 set /p DamageNear=Enter Near Damage:
 cls
 
 
-Echo Please Enter A Number You Want Damage Far To Be.
+Echo 中距離の武器のダメージを入力してください
 echo.
 set /p DamageFar=Enter Far Damage:
 cls
 
 
-Echo Please Enter A Number You Want Damage Very Far To Be.
+Echo 遠距離の武器のダメージを入力してください
 echo.
 set /p DamageVeryFar=Enter Very Far Damage:
 cls
 
-Echo Please Enter Fire Rate Amount.
+Echo 武器の発射速度を入力してください
 echo.
 set /p FireRate=Enter Fire Rate:
 cls
